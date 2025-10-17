@@ -1,0 +1,60 @@
+name: Autograding Tests
+on:
+  - push
+  - repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: PyMOL session file exists
+        id: pymol-session-file-exists
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: PyMOL session file exists
+          setup-command: ''
+          command: test -f 1ubq_session.pse
+          timeout: 10
+          max-score: 30
+      - name: PyMOL visualization image exists
+        id: pymol-visualization-image-exists
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: PyMOL visualization image exists
+          setup-command: ''
+          command: test -f 1ubq_visualization.png
+          timeout: 10
+          max-score: 30
+      - name: Verification results file exists
+        id: verification-results-file-exists
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Verification results file exists
+          setup-command: ''
+          command: test -f verification_result.txt
+          timeout: 10
+          max-score: 20
+      - name: Verification file has content
+        id: verification-file-has-content
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: Verification file has content
+          setup-command: ''
+          command: test -s verification_result.txt
+          timeout: 10
+          max-score: 20
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          PYMOL-SESSION-FILE-EXISTS_RESULTS: "${{steps.pymol-session-file-exists.outputs.result}}"
+          PYMOL-VISUALIZATION-IMAGE-EXISTS_RESULTS: "${{steps.pymol-visualization-image-exists.outputs.result}}"
+          VERIFICATION-RESULTS-FILE-EXISTS_RESULTS: "${{steps.verification-results-file-exists.outputs.result}}"
+          VERIFICATION-FILE-HAS-CONTENT_RESULTS: "${{steps.verification-file-has-content.outputs.result}}"
+        with:
+          runners: pymol-session-file-exists,pymol-visualization-image-exists,verification-results-file-exists,verification-file-has-content

@@ -1,0 +1,44 @@
+{
+  "tests": [
+    {
+      "name": "PyMOL session file exists",
+      "setup": "",
+      "run": "test -f 1ubq_session.pse",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 30
+    },
+    {
+      "name": "PyMOL visualization image exists",
+      "setup": "",
+      "run": "test -f 1ubq_visualization.png",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 30
+    },
+    {
+      "name": "Verification results file exists",
+      "setup": "",
+      "run": "test -f verification_result.txt",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 20
+    },
+    {
+      "name": "Verification file has content",
+      "setup": "",
+      "run": "test -s verification_result.txt",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 20
+    }
+  ]
+}
